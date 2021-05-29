@@ -70,4 +70,9 @@ contract Alloy is Ownable, ERC721URIStorage {
     {
         return _tokenParts[tokenId];
     }
+
+    /// Is this token an Alloy
+    function isAlloy(uint256 tokenId) public view returns (bool) {
+        return _tokenParts[tokenId].length != 0;
+    }
 }
