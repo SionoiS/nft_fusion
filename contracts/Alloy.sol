@@ -46,4 +46,12 @@ contract Alloy is Ownable, ERC721URIStorage {
 
         safeTransferFrom(owner(), msg.sender, tokenId);
     }
+
+    function tokenRequirement(uint256 tokenId)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return _tokenParts[tokenId];
+    }
 }
