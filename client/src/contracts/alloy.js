@@ -4,54 +4,36 @@ const web3 = new Web3(window.ethereum);
 // await window.ethereum.enable();
 
 async function getRequirements(id) {
-    let ids = await contract.methods.getRequirements([id]).call()
+    let ids = await contract.methods.getRequirements(id).call()
 
     return ids
 }
 
 async function isAlloy(id) {
-    let result = await contract.methods.isComposition([id]).call()
+    let result = await contract.methods.isComposition(id).call()
 
     return result
 }
 
-function mintOre(from, tokenURI) {
-    contract.methods.mintOre([ids, tokenURI]).send({ from }).on('transactionHash', function (hash) {
-        //TODO
-    }).on('confirmation', function (confirmationNumber, receipt) {
-        //TODO
-    }).on('receipt', function (receipt) {
-        console.log(receipt);
-    }).on('error', function (error, receipt) {
-        //TODO
-    })
+async function mintOre(cid) {
+    let tx = await contract.methods.mintOre(`ipfs://${cid.to_string()}`).send()
+
+    return tx
 }
 
-function mintAlloy(from, ids, tokenURI) {
-    contract.methods.mintAlloy([ids, tokenURI]).send({ from }).on('transactionHash', function (hash) {
-        //TODO
-    }).on('confirmation', function (confirmationNumber, receipt) {
-        //TODO
-    }).on('receipt', function (receipt) {
-        console.log(receipt);
-    }).on('error', function (error, receipt) {
-        //TODO
-    })
+async function mintAlloy(ids, cid) {
+    let tx = await contract.methods.mintAlloy(ids, `ipfs://${cid.to_string()}`).send()
+
+    return tx
 }
 
-function fuse(from, id) {
-    contract.methods.fuse([id]).send({ from }).on('transactionHash', function (hash) {
-        //TODO
-    }).on('confirmation', function (confirmationNumber, receipt) {
-        //TODO
-    }).on('receipt', function (receipt) {
-        console.log(receipt);
-    }).on('error', function (error, receipt) {
-        //TODO
-    })
+function fuse(id) {
+    let tx = await contract.methods.fuse(id).send()
+
+    return tx
 }
 
-const address = "0x"
+const address = "0x3e5847218C021Ec9Fab114dC244eb319fEa5Fa1A"
 
 export const contract = new web3.eth.Contract([
     {
@@ -188,7 +170,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -207,7 +190,28 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRequirements",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -231,7 +235,28 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "isComposition",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [],
@@ -244,7 +269,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [],
@@ -257,7 +283,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -276,7 +303,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [],
@@ -371,7 +399,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [],
@@ -384,7 +413,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -403,7 +433,8 @@ export const contract = new web3.eth.Contract([
             }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
     },
     {
         "inputs": [
@@ -442,16 +473,24 @@ export const contract = new web3.eth.Contract([
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "mintOre",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint256[]",
                 "name": "ids",
                 "type": "uint256[]"
-            },
-            {
-                "internalType": "string",
-                "name": "tokenURI",
-                "type": "string"
             }
         ],
         "name": "mintAlloy",
@@ -476,25 +515,6 @@ export const contract = new web3.eth.Contract([
         "name": "fuse",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "tokenRequirement",
-        "outputs": [
-            {
-                "internalType": "uint256[]",
-                "name": "",
-                "type": "uint256[]"
-            }
-        ],
-        "stateMutability": "view",
         "type": "function"
     }
 ], address);
