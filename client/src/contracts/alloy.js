@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 
 const web3 = new Web3(window.ethereum);
-await window.ethereum.enable();
+// await window.ethereum.enable();
 
 async function getRequirements(id) {
     let ids = await contract.methods.getRequirements([id]).call()
@@ -53,7 +53,7 @@ function fuse(from, id) {
 
 const address = "0x"
 
-const contract = new web3.eth.Contract([
+export const contract = new web3.eth.Contract([
     {
         "inputs": [],
         "stateMutability": "nonpayable",
