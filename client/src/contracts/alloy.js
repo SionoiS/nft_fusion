@@ -3,14 +3,14 @@ import Web3 from 'web3';
 const web3 = new Web3(window.ethereum);
 // await window.ethereum.enable();
 
-async function getRequirements(id) {
-    let ids = await contract.methods.getRequirements(id).call()
+async function getRequirements(tokenId) {
+    let ids = await contract.methods.getRequirements(tokenId).call()
 
     return ids
 }
 
-async function isAlloy(id) {
-    let result = await contract.methods.isComposition(id).call()
+async function isAlloy(tokenId) {
+    let result = await contract.methods.isComposition(tokenId).call()
 
     return result
 }
@@ -21,16 +21,29 @@ async function mintOre(cid) {
     return tx
 }
 
-async function mintAlloy(ids, cid) {
-    let tx = await contract.methods.mintAlloy(ids, `ipfs://${cid.to_string()}`).send()
+async function mintAlloy(tokenIds, cid) {
+    let tx = await contract.methods.mintAlloy(tokenIds, `ipfs://${cid.to_string()}`).send()
 
     return tx
 }
 
-function fuse(id) {
-    let tx = await contract.methods.fuse(id).send()
+async function fuse(tokenId) {
+    let tx = await contract.methods.fuse(tokenId).send()
 
     return tx
+}
+
+async function getTokenIds(owner) {
+    //call balanceOf(owner) returns # of tokens
+    //https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#IERC721-balanceOf-address-
+    let balance = await contract.methods.balanceOf(owner).call()
+
+    //TODO allocate list of X tokens
+
+    //https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#IERC721Enumerable-tokenOfOwnerByIndex-address-uint256-
+    //TODO fill list with all token ids returned by tokenOfOwnerByIndex(owner, 0..X)
+
+    //TODO return list
 }
 
 const address = "0x3e5847218C021Ec9Fab114dC244eb319fEa5Fa1A"
