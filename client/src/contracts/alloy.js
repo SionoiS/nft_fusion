@@ -3,14 +3,14 @@ import Web3 from 'web3';
 const web3 = new Web3(window.ethereum);
 await window.ethereum.enable();
 
-async function tokenRequirement(id) {
-    let ids = await contract.methods.tokenRequirement([id]).call()
+async function getRequirements(id) {
+    let ids = await contract.methods.getRequirements([id]).call()
 
     return ids
 }
 
 async function isAlloy(id) {
-    let result = await contract.methods.isAlloy([id]).call()
+    let result = await contract.methods.isComposition([id]).call()
 
     return result
 }

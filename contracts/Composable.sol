@@ -8,7 +8,7 @@ abstract contract Composable is ERC721 {
     // Mapping from token Id to array of ids.
     mapping(uint256 => uint256[]) private _tokenParts;
 
-    function _setRequirement(uint256 tokenId, uint256[] memory ids)
+    function _setRequirements(uint256 tokenId, uint256[] memory ids)
         internal
         virtual
     {

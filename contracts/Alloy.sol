@@ -38,7 +38,7 @@ contract Alloy is Ownable, ERC721URIStorage, Composable {
 
         _safeMint(msg.sender, newId);
         _setTokenURI(newId, URI);
-        _setRequirement(newId, ids);
+        _setRequirements(newId, ids);
 
         return newId;
     }
