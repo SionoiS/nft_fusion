@@ -15,6 +15,21 @@ contract Alloy is Ownable, ERC721URIStorage {
 
     constructor() ERC721("Alloy", "ALY") {}
 
+    /// Mint a standard token
+    function mintOre(string memory tokenURI)
+        public
+        onlyOwner
+        returns (uint256)
+    {
+        _tokenIds.increment();
+        uint256 newId = _tokenIds.current();
+
+        _safeMint(msg.sender, newId);
+        _setTokenURI(newId, tokenURI);
+
+        return newId;
+    }
+
     /// Mint a token redeemable only by a user who own the specified array of token Ids.
     function mintAlloy(uint256[] memory ids, string memory tokenURI)
         public
@@ -24,7 +39,7 @@ contract Alloy is Ownable, ERC721URIStorage {
         _tokenIds.increment();
         uint256 newId = _tokenIds.current();
 
-        _mint(msg.sender, newId);
+        _safeMint(msg.sender, newId);
         _setTokenURI(newId, tokenURI);
         _tokenParts[newId] = ids;
 
@@ -47,6 +62,7 @@ contract Alloy is Ownable, ERC721URIStorage {
         safeTransferFrom(owner(), msg.sender, tokenId);
     }
 
+    /// Returns an array of token Ids needed to fuse this token.
     function tokenRequirement(uint256 tokenId)
         public
         view
