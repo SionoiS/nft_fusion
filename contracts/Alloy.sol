@@ -19,8 +19,8 @@ contract Alloy is Ownable, Composable, ERC721URIStorage, ERC721Enumerable {
 
     /// Mint a standard token
     function mintOre(string memory URI) public onlyOwner returns (uint256) {
-        _tokenIds.increment();
         uint256 newId = _tokenIds.current();
+        _tokenIds.increment();
 
         _safeMint(msg.sender, newId);
         _setTokenURI(newId, URI);
@@ -34,8 +34,8 @@ contract Alloy is Ownable, Composable, ERC721URIStorage, ERC721Enumerable {
         onlyOwner
         returns (uint256)
     {
-        _tokenIds.increment();
         uint256 newId = _tokenIds.current();
+        _tokenIds.increment();
 
         _safeMint(msg.sender, newId);
         _setTokenURI(newId, URI);
@@ -47,6 +47,8 @@ contract Alloy is Ownable, Composable, ERC721URIStorage, ERC721Enumerable {
     /// Fuse multiple ore tokens, burning them in the process and get an alloy token.
     function fuse(uint256 tokenId) public {
         _compose(tokenId, msg.sender);
+
+        _approve(msg.sender, tokenId);
 
         safeTransferFrom(owner(), msg.sender, tokenId);
     }
