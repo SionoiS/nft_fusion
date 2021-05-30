@@ -13,6 +13,7 @@
     "truffle": "^5.3.7"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.1.0"
+    "@openzeppelin/contracts": "^4.1.0",
+    "create-react-app": "^4.0.3"
   }
 }
