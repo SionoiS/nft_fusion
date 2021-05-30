@@ -10,10 +10,8 @@ import "../contracts/Composable.sol";
 
 contract Alloy is Ownable, Composable, ERC721URIStorage, ERC721Enumerable {
     using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
 
-    // Mapping from token Id to array of indices.
-    mapping(uint256 => uint256[]) private _tokenParts;
+    Counters.Counter private _tokenIds;
 
     constructor() ERC721("Alloy", "ALY") {}
 

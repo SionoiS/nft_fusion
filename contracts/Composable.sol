@@ -8,6 +8,9 @@ abstract contract Composable is ERC721 {
     // Mapping from token Id to array of ids.
     mapping(uint256 => uint256[]) private _tokenParts;
 
+    event Composition(address indexed user, uint256 indexed tokenId);
+
+    /// Set token ids needed to redeem this token.
     function _setRequirements(uint256 tokenId, uint256[] memory ids)
         internal
         virtual
@@ -15,7 +18,7 @@ abstract contract Composable is ERC721 {
         uint256 len = ids.length;
 
         for (uint256 i = 0; i < len; i++) {
-            require(_exists(ids[i]), "THis token does not exist");
+            require(_exists(ids[i]), "This token does not exist");
         }
 
         _tokenParts[tokenId] = ids;
@@ -31,11 +34,12 @@ abstract contract Composable is ERC721 {
         return _tokenParts[tokenId];
     }
 
-    /// Is this token a composition
+    /// Is this token a composition.
     function isComposition(uint256 tokenId) public view virtual returns (bool) {
         return _tokenParts[tokenId].length != 0;
     }
 
+    /// Check ownership of tokens then burn them.
     function _compose(uint256 tokenId, address user) internal virtual {
         uint256 len = _tokenParts[tokenId].length;
 
@@ -51,5 +55,7 @@ abstract contract Composable is ERC721 {
 
             _burn(id);
         }
+
+        emit Composition(user, tokenId);
     }
 }
